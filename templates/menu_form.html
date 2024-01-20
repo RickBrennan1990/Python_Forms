@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Form</title>
+</head>
+<body>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name }}<br>
+            {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+
+        <p>
+            {{ form.menu_type.label }}
+            {{ form.menu_type }}
+            {% for error in form.menu_type.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.delivery_pickup.label }}
+            {{ form.delivery_pickup }}
+            {% for error in form.delivery_pickup.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.building.label }}
+            {{ form.building }}
+            {% for error in form.building.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
+</html>

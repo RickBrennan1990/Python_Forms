@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, RadioField, DateField, TextAreaField, SelectField, SelectMultipleField, \
+from wtforms import StringField, SubmitField, RadioField, DateField, SelectField, SelectMultipleField, \
     widgets
 from wtforms.validators import DataRequired
 
@@ -35,6 +35,20 @@ class DrSeussCheck(FlaskForm):
     seuss_or_rogers = RadioField(u'Which is you?', choices=[('seuss', 'Dr. Seuss'), ('rogers', 'Mr. Rogers')])
     submit = SubmitField('Submit', validators=[DataRequired()])
 
+
+class MenuOrder(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    menu_type = SelectField(u'Menu Type',
+                            choices=[('Breakfast', 'Breakfast'), ('Lunch', 'Lunch'), ('Dinner', 'Dinner')])
+    delivery_pickup = RadioField(u'Pick up or Delivery',
+                                 choices=[('Pick Up', 'Pick Up'), ('Delivery', 'Delivery')])
+    building = SelectField(u'Building #',
+                           choices=[('BLDG 1', 'BLDG 1'), ('BLDG 2', 'BLDG 2'),
+                                    ('BLDG 3', 'BLDG 3')])
+
+    submit = SubmitField('Submit', validators=[DataRequired()])
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -58,6 +72,20 @@ def form():
     return render_template('form.html', form=form)
 
 
+# Menu Form
+@app.route('/menu_form', methods=['GET', 'POST'])
+def menu_form():
+    form = MenuOrder()
+    if form.validate_on_submit():
+        name = form.name.data
+        menu_type = form.menu_type.data
+        delivery_pickup = form.delivery_pickup.data
+        building = form.building.data
+        string_output = f"Hello, {name}, you chose our {menu_type} menu. You opted for {delivery_pickup} and live in {building}"
+        return string_output
+    return render_template('menu_form.html', form=form)
+
+
 # Green Eggs and Ham Survey
 @app.route('/name_form_green_eggs', methods=['GET', 'POST'])
 def name_form_green_eggs():
@@ -74,13 +102,17 @@ def name_form_green_eggs():
 @app.route('/dr_seuss_check', methods=['GET', 'POST'])
 def dr_seuss_check():
     form = DrSeussCheck()
-    if form.validate_on_submit():
-        seuss_or_rogers = form.seuss_or_rogers.data
-        if seuss_or_rogers == 'seuss':
-            return 'You are Dr. Seuss'
-        else:
-            return "No, that's Mr. Rogers!"
-    return render_template('dr_seuss_check.html', form=form)
+    return render_template('dr_seuss_check.html')
+
+
+@app.route('/dr_seuss_story')
+def dr_seuss_story():
+    return render_template('dr_seuss_story.html')
+
+
+@app.route('/mr_rogers_picked')
+def mr_rogers_picked():
+    return render_template('mr_rogers_picked.html')
 
 
 if __name__ == '__main__':
