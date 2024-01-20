@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dr. Seuss Check</title>
+    <style>
+        input[type="radio"] {
+            display: none;  /* Hide the radio buttons */
+        }
+        label {
+            display: inline-block; /* Make labels display in a line */
+            margin-right: 20px; /* Add spacing between labels */
+        }
+        label img {
+            cursor: pointer;  /* Make images appear clickable */
+        }
+        .dr-seuss {
+            width: 150px; /* Set a fixed width for the Dr. Seuss image */
+            height: 200px; /* Set a fixed height for the Dr. Seuss image */
+        }
+        .mr-rogers {
+            width: 200px; /* Set a wider width for the Mr. Rogers image */
+            height: auto; /* Automatically adjust the height to maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <h1>Hmmm...</h1>
+    <p>Are you sure that you're Dr. Seuss?</p>
+    <p>If you really are Dr. Seuss, which picture is you?</p>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <label>
+            <!-- Radio button for the choice -->
+            <input type="radio" name="seuss_or_rogers" value="seuss">
+            <!-- Image associated with the choice -->
+            <img src="static/dr_seuss.png" alt="Dr. Seuss" class="dr-seuss">
+        </label>
+        <label>
+            <!-- Radio button for the choice -->
+            <input type="radio" name="seuss_or_rogers" value="rogers">
+            <!-- Image associated with the choice -->
+            <img src="static/mr_rogers.png" alt="Mr. Rogers" class="mr-rogers">
+        </label>
+        {% for error in form.seuss_or_rogers.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <p><input type="submit" value="Submit"></p>
+    </form>
+</body>
+</html>

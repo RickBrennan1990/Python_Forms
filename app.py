@@ -31,6 +31,10 @@ class GreenEggsAndHam(FlaskForm):
     submit = SubmitField('Submit', validators=[DataRequired()])
 
 
+class DrSeussCheck(FlaskForm):
+    seuss_or_rogers = RadioField(u'Which is you?', choices=[('seuss', 'Dr. Seuss'), ('rogers', 'Mr. Rogers')])
+    submit = SubmitField('Submit', validators=[DataRequired()])
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -60,10 +64,23 @@ def name_form_green_eggs():
     form = GreenEggsAndHam()
     if form.validate_on_submit():
         name = form.name.data
-        string_output = (
-            f"Hello, {name}.")
-        return string_output
+        if name.lower() == 'dr. seuss':
+            return redirect(url_for('dr_seuss_check'))
+        else:
+            return render_template('not_sam_error.html')
     return render_template('name_form_green_eggs.html', form=form)
+
+
+@app.route('/dr_seuss_check', methods=['GET', 'POST'])
+def dr_seuss_check():
+    form = DrSeussCheck()
+    if form.validate_on_submit():
+        seuss_or_rogers = form.seuss_or_rogers.data
+        if seuss_or_rogers == 'seuss':
+            return 'You are Dr. Seuss'
+        else:
+            return "No, that's Mr. Rogers!"
+    return render_template('dr_seuss_check.html', form=form)
 
 
 if __name__ == '__main__':
