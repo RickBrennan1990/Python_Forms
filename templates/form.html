@@ -7,19 +7,52 @@
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <p>
-            {{ form.name.label }}<br>
-            {{ form.name(size=32) }}<br>
-            {% for error in form.name.errors %}
+            {{ form.first_name.label }}<br>
+            {{ form.first_name(size=32) }}<br>
+            {% for error in form.first_name.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+
         <p>
-            {{ form.DOB.label }}
-            {{ form.DOB }}
-            {% for error in form.DOB.errors %}
+            {{ form.last_name.label }}<br>
+            {{ form.last_name(size=32) }}<br>
+            {% for error in form.last_name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.dob.label }}
+            {{ form.dob }}
+            {% for error in form.dob.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+
+        <p>
+            {{ form.position.label }}
+            {{ form.position }}
+            {% for error in form.position.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.employment_type.label }}
+            {{ form.employment_type }}
+            {% for error in form.employment_type.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.skills.label }}
+            {{ form.skills }}
+            {% for error in form.skills.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
         <p>{{ form.submit() }}</p>
     </form>
 </body>
