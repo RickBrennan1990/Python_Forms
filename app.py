@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, RadioField, DateField, SelectField, SelectMultipleField, \
-    widgets
+from wtforms import (StringField, SubmitField, RadioField, DateField, SelectField, SelectMultipleField,
+                     widgets, TextAreaField, IntegerField)
 from wtforms.validators import DataRequired
 
 app = Flask(__name__)
@@ -36,6 +36,16 @@ class DrSeussCheck(FlaskForm):
     submit = SubmitField('Submit', validators=[DataRequired()])
 
 
+menu_items = [
+    ("Burger", "Burger"),
+    ("Chicken", "Chicken"),
+    ("Rice", "Rice"),
+    ("Soda", "Soda"),
+    ("Milk", "Milk"),
+    ("Alcohol", "Beer")
+]
+
+
 class MenuOrder(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     menu_type = SelectField(u'Menu Type',
@@ -45,7 +55,11 @@ class MenuOrder(FlaskForm):
     building = SelectField(u'Building #',
                            choices=[('BLDG 1', 'BLDG 1'), ('BLDG 2', 'BLDG 2'),
                                     ('BLDG 3', 'BLDG 3')])
-
+    special_instructions = TextAreaField('Special Instructions', validators=[DataRequired()])
+    phone_number = IntegerField('Phone Number', validators=[DataRequired()])
+    menu_choices = SelectMultipleField('Choose your meal items', choices=menu_items,
+                                       option_widget=widgets.CheckboxInput(),
+                                       widget=widgets.ListWidget(prefix_label=False))
     submit = SubmitField('Submit', validators=[DataRequired()])
 
 
@@ -81,7 +95,12 @@ def menu_form():
         menu_type = form.menu_type.data
         delivery_pickup = form.delivery_pickup.data
         building = form.building.data
-        string_output = f"Hello, {name}, you chose our {menu_type} menu. You opted for {delivery_pickup} and live in {building}"
+        special_instructions = form.special_instructions.data
+        menu_choices = form.menu_choices.data
+        phone_number = form.phone_number.data
+        string_output = (
+            f"Hello, {name}, you chose our {menu_type} menu. You opted for {delivery_pickup} and live in {building}"
+            f"Special instructions {special_instructions}, Your menu items include {menu_choices}. You can be reached at {phone_number}")
         return string_output
     return render_template('menu_form.html', form=form)
 
